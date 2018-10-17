@@ -1,8 +1,8 @@
 # JDBCUtil
 在这个轻量级的工具类当中，使用了数据库连接池去提高数据库连接的高效性，并且使用了PreparedStatement来执行对SQL的预编译，能够有效防止SQL注入问题。
-
 ## 配置文件
 在src文件下创建dbconfig.properties文件，并填写以下信息。
+
 ```
 driver = com.mysql.jdbc.Driver
 url = jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8
@@ -265,13 +265,17 @@ public <T> List<T> query(Class<T> cls,String sql,Object...args) throws SQLExcept
 			//通过反射机制创建一个实例
 			T resultObject =  cls.newInstance();
 			for(int i=0;i<col_count;++i){
+				//获取列字段名
 				String col_name = rsmd.getColumnName(i+1);
+				//根据列名获取值
 				Object col_value = rs.getObject(col_name);
 				if(col_value == null)
 					col_value = "";
-
+				//通过Class.getDeclaredField(String name)获取类已声明的指定字段
 				Field field = cls.getDeclaredField(col_name);
+				//修改该字段的的的访问性，这样就可以访问private修饰的字段
 				field.setAccessible(true);
+				//设置该字段的值
 				field.set(resultObject, col_value);
 			}
 			list.add(resultObject);
