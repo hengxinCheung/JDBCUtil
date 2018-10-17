@@ -5,9 +5,9 @@
 在src文件下创建dbconfig.properties文件，并填写以下信息。
 ```
 driver = com.mysql.jdbc.Driver
-url = jdbc\:mysql\://111.230.105.13\:3306/enterprise
+url = jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8
 username = root
-password = mysql456789
+password = root
 jdbcConnectionInitSize =10
 ```
 **注：**properties是一种通用简单的配置文件格式，以键值对作为其配置语法，继承于HashMap，故Java对其有十分方便和高效的读取以及管理方法。
