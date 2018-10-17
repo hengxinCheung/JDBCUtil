@@ -28,7 +28,7 @@ package JDBCUtil;
 
 public class ConnectionPool {
 	
-  /* 
+  	/* 
 	 * 当ConnectionPool类加载时，静态内部类Holder没有被加载进内存。
 	 * 只有当调用getInstance()方法触发时，Holder类才会被加载。
 	 * 此时初始化INSTANCE实例，并且JVM能确保INSTANCE只被实例化一次。
@@ -49,7 +49,7 @@ public class ConnectionPool {
 - 然后我们利用静态代码块把配置文件加载进来，并初始化initSize个连接对象放入连接池中待用
 
 ``` java
-  /* 声明配置变量 */
+  	/* 声明配置变量 */
 	private static LinkedList<Connection> pool = new LinkedList<Connection>();
 	private static String driver;
 	private static String url;
@@ -82,7 +82,7 @@ public class ConnectionPool {
 		}
 	}
   
-  /* 添加initsize个connection对象到连接池中 */
+  	/* 添加initsize个connection对象到连接池中 */
 	private static void addConnectionToPool(){
 		for(int i=0;i<jdbcConnectionInitSize;++i){
 			try {
@@ -101,7 +101,7 @@ public class ConnectionPool {
 - 提供返回连接对象的公有方法：为连接对象添加动态代理以实现回收
 
 ``` java
-  /* 从线程池中得到连接对象 */
+ 	/* 从线程池中得到连接对象 */
 	public Connection getConnection(){
 		
 		/* 如果当前连接池中没有连接对象，并且没有达到最大连接对象数量 */
@@ -151,22 +151,22 @@ public class ConnectionPool {
 ``` java
   /* 检查连接对象的是否过期等有效性 */
   public void checkConnection(){
-		System.out.println("Checking the valid of connection!");
-		/* 检测connection是否有效 */
-		for(int i=0;i<pool.size();++i){
-			/* 只要有一个connection过期就移除全部 */
-			try {
-				if(!pool.get(i).isValid(10)){//10ms内响应
-					pool.clear(); /* 清除全部元素 */
-					max = 1;
-					/* 加入连接对象 */
-					addConnectionToPool();
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	System.out.println("Checking the valid of connection!");
+	/* 检测connection是否有效 */
+	for(int i=0;i<pool.size();++i){
+		/* 只要有一个connection过期就移除全部 */
+		try {
+			if(!pool.get(i).isValid(10)){//10ms内响应
+				pool.clear(); /* 清除全部元素 */
+				max = 1;
+				/* 加入连接对象 */
+				addConnectionToPool();
 			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+  }
   
 ```
